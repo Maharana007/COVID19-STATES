@@ -1,0 +1,60 @@
+#### api login 
+POST http://localhost:3010/login/
+Content-Type: application/json
+
+{
+  "username": "christopher_phillips",
+  "password": "christy@123"
+}
+
+### get all states 
+GET http://localhost:3010/states/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNocmlzdG9waGVyX3BoaWxsaXBzIiwiaWF0IjoxNjgzODA0NTQyfQ.FLcExe775mUZTs6i2Ft6iYTpWMtjsQMbwVQa1_0BQBc 
+
+
+### get states  by id
+GET http://localhost:3010/states/9/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNocmlzdG9waGVyX3BoaWxsaXBzIiwiaWF0IjoxNjgzODA0NjU3fQ.MEWgHFY470QZ1Cc26at8FLV_TqxT9w5XOv7XwggyV40
+
+### post districts 
+
+POST http://localhost:3010/districts/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNocmlzdG9waGVyX3BoaWxsaXBzIiwiaWF0IjoxNjgzODA0Njk3fQ.ra3y3OCJhx35E6tWmNr9hPgcrHdfCNvfsyqIu4QMW3A
+Content-Type: application/json
+
+{
+  "districtName": "Bagalkot",
+  "stateId": 3,
+  "cases": 2323,
+  "cured": 2000,
+  "active": 315,
+  "deaths": 8
+}
+
+
+### get district  by id
+GET http://localhost:3010/districts/2/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNocmlzdG9waGVyX3BoaWxsaXBzIiwiaWF0IjoxNjgzODA0NzIyfQ.yIDmVyhoUlnab0aqsFBCWbKSaqqspo53yRNyiS7WcTo
+### delete district by id
+
+DELETE http://localhost:3010/districts/3/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNocmlzdG9waGVyX3BoaWxsaXBzIiwiaWF0IjoxNjgzODA0ODIxfQ.0IzQ_OmVwlvitTFnNdj0sJFUJqkCzXdxqiE6deRDen4
+### Update district by id
+
+PUT http://localhost:3010/districts/1/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNocmlzdG9waGVyX3BoaWxsaXBzIiwiaWF0IjoxNjgzODA0Nzk0fQ.vE_O_fIZIEKkhEajPm8Hi4y8N_fONsU2kmb7i-P2yiI
+Content-Type: application/json
+
+{
+  "districtName": "Nadia",
+  "stateId": 3,
+  "cases": 9628,
+  "cured": 6524,
+  "active": 3000,
+  "deaths": 104
+}
+
+#### get sum of details 
+
+GET http://localhost:3010/states/2/stats/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNocmlzdG9waGVyX3BoaWxsaXBzIiwiaWF0IjoxNjgzODA1MjA2fQ.pklfRdW6Zi13mb27PGVt7RSTKwyjINd_1nb14yExtZc
