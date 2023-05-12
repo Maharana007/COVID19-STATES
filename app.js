@@ -35,11 +35,39 @@ const convertStets = (items) => {
   };
 };
 
+////  Authentication
+
+function authenticationToken(request, response, next) {
+  let jwtToken;
+  const authHeader = request.headers["authorization"];
+  if (authHeader !== undefined) {
+    jwtToken = authHeader.split(" ")[1];
+  }
+  if (jwtToken !== undefined) {
+     response.status(401);
+     response.send(`Invalid JWT Token`); 
+  }else {
+   jwt.verify(jwtToken, "secret_key", async (error, payload) => {
+      if (error) {
+        response.status(401);
+        response.send(`Invalid JWT Token`); // Scenario 1
+      } else {
+        //request.username = payload.username;
+        next(); //Scenario 2
+      }
+    });
+  } 
+}
+
 app.post("/login/", async (request, response) => {
   const { username, password } = request.body;
   const userQuery = `SELECT * FROM user WHERE username = '${username}'`;
   const userResponse = await db.get(userQuery);
-  if (userResponse !== undefined) {
+  if (userResponse === undefined) {
+    response.status(400);
+    response.rend("Invalid User");
+  }
+  else {
     const passwordMatch = await bcrypt.compare(password, userResponse.password);
     if (passwordMatch) {
       let payload = { username: username };
@@ -50,35 +78,9 @@ app.post("/login/", async (request, response) => {
       response.status(400);
       response.send("Invalid Password");
     }
-  } else {
-    response.status(400);
-    response.rend("Invalid User");
   }
 });
 
-////  Authentication
-
-function authenticationToken(request, response, next) {
-  let jwtToken;
-  const authHeader = request.headers["authorization"];
-  if (authHeader !== undefined) {
-    jwtToken = authHeader.split(" ")[1];
-  }
-  if (jwtToken !== undefined) {
-    jwt.verify(jwtToken, "secret_key", async (error, payload) => {
-      if (error) {
-        response.status(401);
-        response.send(`Invalid JWT Token`); // Scenario 1
-      } else {
-        request.username = payload.username;
-        next(); //Scenario 2
-      }
-    });
-  } else {
-    response.status(401);
-    response.send(`Invalid JWT Token`); //Scenario 1
-  }
-}
 
 /// API 2 GET /states/
 
