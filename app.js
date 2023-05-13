@@ -43,11 +43,11 @@ function authenticationToken(request, response, next) {
   if (authHeader !== undefined) {
     jwtToken = authHeader.split(" ")[1];
   }
-  if (jwtToken !== undefined) {
+  if (jwtToken === undefined) {
      response.status(401);
      response.send(`Invalid JWT Token`); 
   }else {
-   jwt.verify(jwtToken, "secret_key", async (error, payload) => {
+   jwt.verify(jwtToken, "Secret token", async (error, payload) => {
       if (error) {
         response.status(401);
         response.send(`Invalid JWT Token`); // Scenario 1
@@ -186,18 +186,32 @@ app.put(
   }
 );
 
-//// API get /states/:stateId/stats/
 
-app.get("/states/:stateId/stats/", async (request, response) => {
-  const { stateId } = request.params;
-  const districtQuery = `SELECT 
-    SUM(cases) AS totalCases, 
-    SUM(cured) AS totalCured, 
-    SUM(active) AS totalActive, 
-    SUM(deaths) AS totalDeaths FROM district 
-  WHERE state_id= '${stateId}'`;
-  const stats = await db.get(districtQuery);
-  response.send(convertDist(stats));
-});
+////8 API get /states/:stateId/stats/
+
+app.get(
+  "/states/:stateId/stats/",
+  authenticationToken,
+  async (request, response) => {
+    const { stateId } = request.params;
+    const getStateStatsQuery = `
+    SELECT
+      SUM(cases),
+      SUM(cured),
+      SUM(active),
+      SUM(deaths)
+    FROM
+      district
+    WHERE
+      state_id=${stateId};`;
+    const stats = await db.get(getStateStatsQuery);
+    response.send({
+      totalCases: stats["SUM(cases)"],
+      totalCured: stats["SUM(cured)"],
+      totalActive: stats["SUM(active)"],
+      totalDeaths: stats["SUM(deaths)"],
+    });
+  }
+);
 
 module.exports = app;
